@@ -53,6 +53,56 @@ namespace Miner
     public override char Code { get { return ' '; } }
   }
 
+  public class Grass : GameObject
+  {
+      protected override void InternalMove(char action)
+      {
+      }
+
+      public override char Code { get { return '.'; } }
+  }
+
+  public class Wall : GameObject
+  {
+      protected override void InternalMove(char action)
+      {
+      }
+
+      public override char Code { get { return '#'; } }
+  }
+
+  public class ClosedLift : GameObject
+  {
+      protected override void InternalMove(char action)
+      {
+          if (!Map.Objects.OfType<Lamda>().Any())
+              Map.Objects[this.x, this.y] = new OpenedLift() { Map = Map };
+          Debug.WriteLine("Lift has just opened!!!");
+      }
+
+      public override char Code { get { return 'L'; } }
+  }
+
+  public class OpenedLift : GameObject
+  {
+      protected override void InternalMove(char action)
+      {
+          
+      }
+
+      public override char Code { get { return 'O'; } }
+  }
+
+  public class Lambda : GameObject
+  {
+      protected override void InternalMove(char action)
+      {
+
+      }
+
+      public override char Code { get { return '\\'; } }
+  }
+
   public class Robot: GameObject
   {
     public override char Code { get { return 'R'; } }
