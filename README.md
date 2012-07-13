@@ -1,2 +1,4 @@
 npo-icfp
 ========
+
+challenge
