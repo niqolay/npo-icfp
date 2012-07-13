@@ -9,19 +9,28 @@
             <Label>Score</Label>
             <TextBox Name="Score">0</TextBox>
         </StackPanel>
-  <TextBox IsReadOnly="True" Name="Box" AcceptsReturn="True" Width="453" Height="387" FontFamily="Courier New"></TextBox>
+        <TextBox IsReadOnly="True" Name="Box" AcceptsReturn="True" Width="453" Height="387" FontFamily="Courier New"></TextBox>
         <StackPanel Orientation="Horizontal">
-    <Button Click="Button_Click">ReloadMap</Button>            
+            <Button Click="Button_Click">ReloadMap</Button>
             <Button Click="Play">Play</Button>
             <Button Click="Pause">pause</Button>
-        </StackPanel>    
-    <StackPanel Orientation="Horizontal">
-        <Label >Команды</Label>
-        <TextBox x:Name="Commands" Width="800"></TextBox>
-    </StackPanel>
-    <StackPanel Orientation="Horizontal">
-        <Label >Log:</Label>
-        <TextBox x:Name="Log" Width="800"></TextBox>
-    </StackPanel>
+        </StackPanel>
+        <GroupBox Header="Скорость выполнения">
+            <StackPanel>
+                <RadioButton IsChecked="True" Checked="RadioButton_Checked" Tag="1000">1x</RadioButton>
+                <RadioButton Checked="RadioButton_Checked" Tag="500">2x</RadioButton>
+                <RadioButton Checked="RadioButton_Checked" Tag="250">4x</RadioButton>
+                <RadioButton Checked="RadioButton_Checked" Tag="125">8x</RadioButton>
+                <RadioButton Checked="RadioButton_Checked" Tag="62">16x</RadioButton>
+            </StackPanel>
+        </GroupBox>
+        <StackPanel Orientation="Horizontal">
+            <Label >Команды</Label>
+            <TextBox x:Name="Commands" Width="800"></TextBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <Label >Log:</Label>
+            <TextBox x:Name="Log" Width="800"></TextBox>
+        </StackPanel>
     </StackPanel>
 </Window>

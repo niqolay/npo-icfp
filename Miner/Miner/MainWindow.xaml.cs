@@ -31,6 +31,7 @@ namespace Miner
       InitializeComponent();
       this.timer = new Timer(500);
       this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+      this.Button_Click(this, new RoutedEventArgs());
     }
 
     void timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -86,12 +87,17 @@ namespace Miner
       }
     }
 
+    private object locker = new object();
+
     private void DoAction(char action)
     {
-      var realAction = FixMyBadCoords(action);      
-      engine.Do(realAction);
-      Log.Text += action;
-      Paint();
+      lock (this.locker)
+      {
+        var realAction = FixMyBadCoords(action);
+        engine.Do(realAction);
+        Log.Text += action;
+        Paint();
+      }
     }
 
     private char FixMyBadCoords(char action)
@@ -121,6 +127,12 @@ namespace Miner
     private void Pause(object sender, RoutedEventArgs e)
     {
       this.timer.Stop();
+    }
+
+    private void RadioButton_Checked(object sender, RoutedEventArgs e)
+    {
+      if (((RadioButton)sender).Tag != null)
+      this.timer.Interval = int.Parse((string)((RadioButton)sender).Tag);
     }
   }
 }
