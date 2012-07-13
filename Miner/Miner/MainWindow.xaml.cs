@@ -115,7 +115,8 @@ namespace Miner
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-      this.engine = new Engine(@"maps\contest10.map");
+      this.engine = new Engine(@"maps\contest5.map");
+      this.Log.Text = string.Empty;
       this.Paint();
     }
 
