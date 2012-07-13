@@ -19,3 +19,4 @@ C:\Users\NiQ\Documents\GitHub\npo-icfp\Miner\Miner\bin\Debug\Miner.exe
 C:\Users\NiQ\Documents\GitHub\npo-icfp\Miner\Miner\bin\Debug\Miner.pdb
 C:\Users\NiQ\Documents\GitHub\npo-icfp\Miner\Miner\obj\x86\Debug\Miner.exe
 C:\Users\NiQ\Documents\GitHub\npo-icfp\Miner\Miner\obj\x86\Debug\Miner.pdb
+C:\Users\NiQ\Documents\GitHub\npo-icfp\Miner\Miner\bin\Debug\maps\rocks.map

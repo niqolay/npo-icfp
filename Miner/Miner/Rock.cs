@@ -9,11 +9,13 @@ namespace Miner
   {
     protected override void InternalMove(char action)
     {
+      this.JustMoved = false;
       string dummy;
       var newX = x + 1;
       var newY = y;
       if (IsClear(newX, newY, out dummy) && map.Objects[newX, newY] is Empty )
       {
+        this.JustMoved = true;
         DoMove(newX, newY);
         CheckRobotKilledByMe();
         return;
@@ -30,11 +32,12 @@ namespace Miner
       if (IsInBounds(belowX, belowY) && (map.Objects[belowX, belowY] is Rock || map.Objects[belowX, belowY] is Lambda))
       {
 
-        if (IsInBounds(rightX, rightY) && map.Objects[rightX, rightY] is Empty)
+        if (IsInBounds(rightX, rightY) && WasEmpty(rightX, rightY))
         {
 
-          if (IsInBounds(rightBelowX, rightBelowY) && map.Objects[rightBelowX, rightBelowY] is Empty)
+          if (IsInBounds(rightBelowX, rightBelowY) && WasEmpty(rightBelowX, rightBelowY))
           {
+            this.JustMoved = true;
             DoMove(rightBelowX, rightBelowY);
             CheckRobotKilledByMe();
             return;
@@ -44,16 +47,23 @@ namespace Miner
       // Стоим на камне, справа занято хотя бы одно и слева свободно.
       if (IsInBounds(belowX, belowY) && (map.Objects[belowX, belowY] is Rock))
       {
-        if (!(IsInBounds(belowX, belowY) && map.Objects[belowX, belowY] is Empty) ||
-            !(IsInBounds(rightBelowX, rightBelowY) && map.Objects[rightBelowX, rightBelowY] is Empty))
-          if (IsInBounds(leftBelowX, leftBelowY) && map.Objects[leftBelowX, leftBelowY] is Empty)
+        if (!(IsInBounds(rightX, rightY) && WasEmpty(rightX, rightY)) ||
+            !(IsInBounds(rightBelowX, rightBelowY) && WasEmpty(rightBelowX, rightBelowY)))
+          if (IsInBounds(leftBelowX, leftBelowY) && WasEmpty(leftBelowX, leftBelowY))
           {
+            this.JustMoved = true;
             DoMove(leftBelowX, leftBelowY);
             CheckRobotKilledByMe();
             return;
           }
       }
 
+    }
+
+    private bool WasEmpty(int rightX, int rightY)
+    {
+      var rock = map.Objects[rightX, rightY] as Rock;
+      return map.Objects[rightX, rightY] is Empty || (rock != null && rock.JustMoved);
     }
 
     private bool IsRobot(int checkX, int checkY)
@@ -73,5 +83,7 @@ namespace Miner
     {
       get { return '*'; }
     }
+
+    public bool JustMoved { get; private set; }
   }
 }
