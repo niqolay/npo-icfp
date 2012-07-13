@@ -55,13 +55,19 @@ namespace Miner
       // move rock on go left
       if (newY < this.y && map.Objects[newX, newY] is Rock)
       {
-        map.Objects[newX, newY - 1] = map.Objects[newX, newY];
+        var rock = map.Objects[newX, newY];
+        map.Objects[newX, newY - 1] = rock;
+        rock.x = newX;
+        rock.y = newY - 1;
         map.Objects[newX, newY] = GameObject.Empty;
       }
       // move rock on go right
       if (newY > this.y && map.Objects[newX, newY] is Rock)
       {
-        map.Objects[newX, newY + 1] = map.Objects[newX, newY];
+        var rock = map.Objects[newX, newY];
+        map.Objects[newX, newY + 1] = rock;
+        rock.x = newX;
+        rock.y = newY + 1;
         map.Objects[newX, newY] = GameObject.Empty;
       }
       if (map.Objects[newX, newY] is Lambda)
