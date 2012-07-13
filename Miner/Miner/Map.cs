@@ -8,7 +8,7 @@ namespace Miner
 {
   public class Map
   {
-    public GameObject[,] Objects { get; private set; }
+    public GameObject[,] Objects { get; private set; }    
 
     public Map(int n, int m)
     {

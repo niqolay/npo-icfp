@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Timers;
 
 namespace Miner
 {
@@ -20,21 +21,45 @@ namespace Miner
   public partial class MainWindow : Window
   {
 
-      Engine engine;
+    Engine engine;
+    private Timer timer;
+    private int currentPosition;
 
     public MainWindow()
     {
       System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.ConsoleTraceListener());
-      InitializeComponent();                 
+      InitializeComponent();
+      this.timer = new Timer(500);
+      this.timer.Elapsed += new ElapsedEventHandler(timer_Elapsed);
+    }
+
+    void timer_Elapsed(object sender, ElapsedEventArgs e)
+    {
+      this.Dispatcher.Invoke(new Action(() =>
+      {
+        this.Commands.Focus();
+        if (currentPosition < Commands.Text.Length)
+        {
+          Commands.CaretIndex = currentPosition;
+          DoAction(Commands.Text[currentPosition]);
+        }
+        else
+        {
+          timer.Stop();
+          currentPosition = 0;
+        }
+        currentPosition++;
+      }));
     }
 
     private void Paint()
-    {      
-      var stringMap = new StringBuilder();      
+    {
+      this.Score.Text = engine.score.Value.ToString();
+      var stringMap = new StringBuilder();
       for (int i = 0; i < engine.map.n; i++)
       {
-        for (int j = 0; j < engine.map.m; j++)        
-          stringMap.Append(engine.map.Objects[i, j].Code);               
+        for (int j = 0; j < engine.map.m; j++)
+          stringMap.Append(engine.map.Objects[i, j].Code);
         stringMap.AppendLine();
       }
       this.Box.Text = stringMap.ToString();
@@ -42,21 +67,60 @@ namespace Miner
 
     private void Window_KeyDown(object sender, KeyEventArgs e)
     {
-      if (e.Key == Key.D)
-        engine.Do('D');
-      else if (e.Key == Key.A)
-        engine.Do('U');
-      else if (e.Key == Key.W)
-        engine.Do('L');
-      else if (e.Key == Key.S)
-        engine.Do('R');
+      char? action = null;
+      if (e.Key == Key.Left)
+        action = 'L';
+      else if (e.Key == Key.Right)
+        action = 'R';
+      else if (e.Key == Key.Up)
+        action = 'U';
+      else if (e.Key == Key.Down)
+        action = 'D';
+      else if (e.Key == Key.Z)
+        action = 'W';
+      else if (e.Key == Key.X)
+        action = 'A';
+      if (action.HasValue)
+      {
+        DoAction(action.Value);
+      }
+    }
+
+    private void DoAction(char action)
+    {
+      var realAction = FixMyBadCoords(action);      
+      engine.Do(realAction);
+      Log.Text += action;
       Paint();
+    }
+
+    private char FixMyBadCoords(char action)
+    {
+      if (action == 'U')
+        return 'L';
+      if (action == 'D')
+        return 'R';
+      if (action == 'R')
+        return 'D';
+      if (action == 'L')
+        return 'U';
+      return action;
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
-        this.engine = new Engine(@"maps\rocks.map");
-        this.Paint();
-    } 
+      this.engine = new Engine(@"maps\contest10.map");
+      this.Paint();
+    }
+
+    private void Play(object sender, RoutedEventArgs e)
+    {
+      this.timer.Start();
+    }
+
+    private void Pause(object sender, RoutedEventArgs e)
+    {
+      this.timer.Stop();
+    }
   }
 }

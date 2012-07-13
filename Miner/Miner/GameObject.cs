@@ -9,6 +9,7 @@ namespace Miner
   public abstract class GameObject
   {
     public Map map { get; set; }
+    public Score score { get; set; }
     public int x { get; set; }
     public int y { get; set; }
     public bool IsMovedThisTurn { get; set; }

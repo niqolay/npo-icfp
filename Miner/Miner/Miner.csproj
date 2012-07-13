@@ -60,6 +60,7 @@
     </ApplicationDefinition>
     <Compile Include="Robot.cs" />
     <Compile Include="Rock.cs" />
+    <Compile Include="Score.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

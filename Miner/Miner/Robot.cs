@@ -64,6 +64,10 @@ namespace Miner
         map.Objects[newX, newY + 1] = map.Objects[newX, newY];
         map.Objects[newX, newY] = GameObject.Empty;
       }
+      if (map.Objects[newX, newY] is Lambda)
+        this.score.LabmdaCollected();
+      if (map.Objects[newX, newY] is OpenedLift)
+        this.score.Win();
       DoMove(newX, newY);
       Debug.WriteLine(string.Format("Moved to ({0}; {1})", x, y, newX, newY));
     }
