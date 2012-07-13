@@ -19,14 +19,13 @@ namespace Miner
   /// </summary>
   public partial class MainWindow : Window
   {
-    
-    Engine engine = new Engine(10, 20);
+
+      Engine engine;
 
     public MainWindow()
     {
       System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.ConsoleTraceListener());
-      InitializeComponent();            
-      this.Paint();
+      InitializeComponent();                 
     }
 
     private void Paint()
@@ -52,6 +51,12 @@ namespace Miner
       else if (e.Key == Key.S)
         engine.Do('R');
       Paint();
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        this.engine = new Engine(@"maps\contest10.map");
+        this.Paint();
     } 
   }
 }

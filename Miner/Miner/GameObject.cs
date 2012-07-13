@@ -75,9 +75,12 @@ namespace Miner
   {
       protected override void InternalMove(char action)
       {
-          if (!Map.Objects.OfType<Lamda>().Any())
-              Map.Objects[this.x, this.y] = new OpenedLift() { Map = Map };
-          Debug.WriteLine("Lift has just opened!!!");
+          if (!Map.Objects.OfType<Lambda>().Any())
+          {
+              Map.Objects[this.x, this.y] = new OpenedLift() { Map = Map, x = x, y = y };
+              Debug.WriteLine("Lift has just opened!!!");
+          }
+          
       }
 
       public override char Code { get { return 'L'; } }
@@ -131,6 +134,10 @@ namespace Miner
            MoveTo(x, y + 1);
             break;
           }
+          case 'W':
+         {             
+             break;
+         }
       }
     }
 

@@ -3,5 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="MainWindow" Height="768" Width="1024"
         KeyDown="Window_KeyDown">
+    <StackPanel>
   <TextBox IsReadOnly="True" Name="Box" AcceptsReturn="True" Width="453" Height="387" FontFamily="Courier New"></TextBox>
+    <Button Click="Button_Click">Play</Button>
+    </StackPanel>
 </Window>
