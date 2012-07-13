@@ -8,7 +8,7 @@ namespace Miner
 {
   public abstract class GameObject
   {
-    public Map Map { get; set; }
+    public Map map { get; set; }
     public int x { get; set; }
     public int y { get; set; }
     public bool IsMovedThisTurn { get; set; }
@@ -29,22 +29,39 @@ namespace Miner
     protected bool IsClear(int newX, int newY, out string reason)
     {
       reason = "123";
-      if (newY >= 0 && newY < Map.m && newX >= 0 && newX < Map.n)
-        return true;
-      reason = string.Format("Out of bounds. Current ({0}; {1}). Going to ({2}; {3})", x, y, newX, newY);
-      return false;
+      if (!IsInBounds(newX, newY))
+      {
+        reason = string.Format("Out of bounds. Current ({0}; {1}). Going to ({2}; {3})", x, y, newX, newY);
+        return false;
+      }
+      if (map.Objects[newX, newY] is Wall)
+      {
+        reason = string.Format("can't go to wall. Current ({0}; {1}). Going to ({2}; {3})", x, y, newX, newY);
+        return false;
+      }
+      if (map.Objects[newX, newY] is ClosedLift)
+      {
+        reason = string.Format("can't go to closed lift. Current ({0}; {1}). Going to ({2}; {3})", x, y, newX, newY);
+        return false;
+      }
+      return true;
+    }
+
+    protected bool IsInBounds(int newX, int newY)
+    {
+      return (newY >= 0 && newY < map.m && newX >= 0 && newX < map.n);
     }
 
     protected void DoMove(int newX, int newY)
     {
-      Map.Objects[this.x, this.y] = GameObject.Empty;
+      map.Objects[this.x, this.y] = GameObject.Empty;
       this.x = newX;
       this.y = newY;
-      Map.Objects[this.x, this.y] = this;
+      map.Objects[this.x, this.y] = this;
     }
   }
 
-  public class Empty: GameObject
+  public class Empty : GameObject
   {
     protected override void InternalMove(char action)
     {
@@ -55,126 +72,64 @@ namespace Miner
 
   public class Grass : GameObject
   {
-      protected override void InternalMove(char action)
-      {
-      }
+    protected override void InternalMove(char action)
+    {
+    }
 
-      public override char Code { get { return '.'; } }
+    public override char Code { get { return '.'; } }
   }
 
   public class Wall : GameObject
   {
-      protected override void InternalMove(char action)
-      {
-      }
+    protected override void InternalMove(char action)
+    {
+    }
 
-      public override char Code { get { return '#'; } }
+    public override char Code { get { return '#'; } }
   }
 
   public class ClosedLift : GameObject
   {
-      protected override void InternalMove(char action)
+    protected override void InternalMove(char action)
+    {
+      if (!map.Objects.OfType<Lambda>().Any())
       {
-          if (!Map.Objects.OfType<Lambda>().Any())
-          {
-              Map.Objects[this.x, this.y] = new OpenedLift() { Map = Map, x = x, y = y };
-              Debug.WriteLine("Lift has just opened!!!");
-          }
-          
+        map.Objects[this.x, this.y] = new OpenedLift() { map = map, x = x, y = y };
+        Debug.WriteLine("Lift has just opened!!!");
       }
 
-      public override char Code { get { return 'L'; } }
+    }
+
+    public override char Code { get { return 'L'; } }
   }
 
   public class OpenedLift : GameObject
   {
-      protected override void InternalMove(char action)
-      {
-          
-      }
+    protected override void InternalMove(char action)
+    {
 
-      public override char Code { get { return 'O'; } }
+    }
+
+    public override char Code { get { return 'O'; } }
   }
 
   public class Lambda : GameObject
   {
-      protected override void InternalMove(char action)
-      {
-
-      }
-
-      public override char Code { get { return '\\'; } }
-  }
-
-  public class Robot: GameObject
-  {
-    public override char Code { get { return 'R'; } }
-
     protected override void InternalMove(char action)
     {
-      switch (action)
-      {
-        case 'R':
-          {
-            MoveTo(x + 1, y);
-            break;
-          }
-          case 'L':
-          {
-            MoveTo(x - 1, y);
-            break;
-          }
-          case 'U':
-          {
-            MoveTo(x, y - 1);
-            break;
-          }
-          case 'D':
-         {
-           MoveTo(x, y + 1);
-            break;
-          }
-          case 'W':
-         {             
-             break;
-         }
-      }
+
     }
 
-    private void MoveTo(int newX, int newY)
-    {
-      string reason;
-      if (this.CanGo(newX, newY, out reason))
-        this.Move(newX, newY);
-      else
-        Debug.WriteLine(string.Format("Robot can not move: {0}", reason));     
-    }
-
-    private void Move(int newX, int newY)
-    {
-      DoMove(newX, newY);
-       Debug.WriteLine(string.Format("Moved to ({0}; {1})", x, y, newX, newY));
-    }
-
-    private bool CanGo(int newX, int newY, out string reason)
-    {
-      //if (Map.Objects[newY, newX] is Empty || Map.Objects[newY, newX] is Lambda || Map.Objects[newY, newX] is Rock)      
-      return IsClear(newX, newY, out reason);
-    }    
+    public override char Code { get { return '\\'; } }
   }
 
-  public class Rock : GameObject
+  public class DeadRobot : GameObject
   {
     protected override void InternalMove(char action)
     {
-      string dummy;
-      if (IsClear(x + 1, y, out dummy))
-        DoMove(x + 1, y);
+
     }
 
-    public override char Code
-    {
-      get { return '*'; }
-    }
-  }
+    public override char Code { get { return '+'; } }
+  }  
 }

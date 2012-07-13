@@ -30,7 +30,7 @@ namespace Miner
             {
                 var code = lines[i][j];
                 var element = CreateObjectByCode(code);
-                element.Map = newMap;
+                element.map = newMap;
                 element.x = i;
                 element.y = j;
                 newMap.Objects[i, j] = element;
@@ -54,19 +54,21 @@ namespace Miner
         return null;
     }
 
-    private void ForEach(Action<GameObject> action)
+    private void ForEach(Func<GameObject, bool> predicate, Action<GameObject> action)
     {
             for (int i = 0; i < map.n; i++)
               for (int j = 0; j < map.m; j++)
               {
-                action(map.Objects[i, j]);
+                if (predicate(map.Objects[i, j]))
+                  action(map.Objects[i, j]);
               }
     }
 
     public void Do(char action)
     {
-      ForEach(e => e.Move(action));
-      ForEach(e => e.IsMovedThisTurn = false);
+      ForEach(e => e is Robot, e => e.Move(action));
+      ForEach(e => !(e is Robot), e => e.Move(action));
+      ForEach(e => true, e => e.IsMovedThisTurn = false);
     }
 
     private void FillEmpty()
