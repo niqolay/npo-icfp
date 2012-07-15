@@ -368,9 +368,6 @@ class Map:
   def show(self):
     for index in range(len(self.map)):
       print "".join(self.map[len(self.map) - index - 1])
-    #print "Distances: " + str(self.distances)
-    #print "RouteXs: " + str(self.routeXs)
-    #print "RouteYs: " + str(self.routeYs)
     print "MapState: " + str(MapState.tostring(self.mapState))
     print "Scores: " + str(self.scores)
     print "Lambdas: " + str(self.collectedLambda)
@@ -383,14 +380,14 @@ class Map:
       move.afterapply(result)
     return result
   def getmapitem(self, x, y):
-    if (x >= 0) & (x < len(self.map)) & \
-       (y >= 0) & (y < len(self.map[0])):
+    if (x >= 0) & (x < self.colcount()) & \
+       (y >= 0) & (y < self.rowcount()):
       return self.map[y][x]
     else:
       return WALL_CODE
   def setmapitem(self, x, y, value):
-    if (x >= 0) & (x <= len(self.map)) & \
-       (y >= 0) & (y <= len(self.map[0])):
+    if (x >= 0) & (x <= self.colcount()) & \
+       (y >= 0) & (y <= self.rowcount()):
       self.map[y][x] = value
   def move(self, moveCode, resultDiff):        
     if (self.mapState == MapState.RUNNING):
@@ -575,5 +572,5 @@ class PathFinder:
     ant.show()
     return
         
-map = MapSamples().map(1)
+map = MapSamples().map(2)
 PathFinder(antCount = 50, routeDepth = 50, map = map, targetScores = 225, volatizing = 1.0, alpha = 1.0, beta = 2.0).dofind()
