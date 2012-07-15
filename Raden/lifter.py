@@ -15,6 +15,159 @@ LAMBDA_COLLECTED_SCORES = 25
 WINNING_PER_LAMBDA_SCORES = 50
 ABORT_PER_LAMBDA_SCORES = 25
 
+class MapSamples:
+  def __init__(self):
+    self.maps = []
+    self.maps.append(self.map1())
+    self.maps.append(self.map2())
+    self.maps.append(self.map3())
+    self.maps.append(self.map4())
+    self.maps.append(self.map5())
+    self.maps.append(self.map6())
+    self.maps.append(self.map7())
+    self.maps.append(self.map8())
+    self.maps.append(self.map9())
+  def map(self, index):
+    return self.maps[index]
+  def map1(self):
+    map = Map()
+    map.load(    \
+      [r'######', \
+       r'#. *R#', \
+       r'#  \.#', \
+       r'#\ * #', \
+       r'L  .\#', \
+       r'######'])
+    return map
+  def map2(self):
+    map = Map()
+    map.load(       \
+      [r'#######',  \
+       r'#..***#',  \
+       r'#..\\\#',  \
+       r'#...**#',  \
+       r'#.*.*\#',  \
+       r'LR....#',  \
+       r'#######'])
+    return map
+  def map3(self):
+    map = Map()
+    map.load(      \
+      [r'########', \
+       r'#..R...#', \
+       r'#..*...#', \
+       r'#..#...#', \
+       r'#.\.\..L', \
+       r'####**.#', \
+       r'#\.....#', \
+       r'#\..* .#', \
+       r'########'])
+    return map
+  def map4(self):
+    map = Map()
+    map.load(
+      [r'#########', \
+       r'#.*..#\.#', \
+       r'#.\..#\.L', \
+       r'#.R .##.#', \
+       r'#.\  ...#', \
+       r'#..\  ..#', \
+       r'#...\  ##', \
+       r'#....\ \#', \
+       r'#########'])
+    return map
+  def map5(self):
+    map = Map()
+    map.load(          \
+      [r'############', \
+       r'#..........#', \
+       r'#.....*....#', \
+       r'#..\\\\\\..#', \
+       r'#.     ....#', \
+       r'#..\\\\\\\.#', \
+       r'#..\..    .#', \
+       r'#..\.. ....#', \
+       r'#..... ..* #', \
+       r'#..### ### #', \
+       r'#...R#\#\\.#', \
+       r'######L#####'])
+    return map
+  def map6(self):
+    map = Map()
+    map.load(             \
+      [r'###############', \
+       r'#\\\.......** #', \
+       r'#\\#.#####...##', \
+       r'#\\#.....*##. #', \
+       r'#\#####\...## #', \
+       r'#\......####* #', \
+       r'#\.######* #.\#', \
+       r'#\.#. *...##.##', \
+       r'#\##. ..  *...#', \
+       r'#\...... L#.#.#', \
+       r'###########.#.#', \
+       r'#\..........#.#', \
+       r'##.##########.#', \
+       r'#R.#\.........#', \
+       r'###############'])
+    return map
+  def map7(self):
+    map = Map()
+    map.load(              \
+      [r' #######        ', \
+       r' ##    *#       ', \
+       r'  ##R  *##      ', \
+       r'   ##\\\\##     ', \
+       r'    ##....##    ', \
+       r'   ##..\ . ##   ', \
+       r'  ## . L .  ##  ', \
+       r' ##\\\# #\\\\## ', \
+       r'######   #######'])
+    return map
+  def map8(self):
+    map = Map()
+    map.load(
+      [r'##############',        \
+       r'#\\... ......#',        \
+       r'###.#. ...*..#',        \
+       r'#.#. ... ..#',          \
+       r'### #.   \ ..#',        \
+       r'#. .#..... **#######',  \
+       r'#.#\#..... ..\\\*. #',  \
+       r'#*\\#.###. ####\\\ #',  \
+       r'#\\.#.     ...## \ #',  \
+       r'#\#.#..... ....# \ #',  \
+       r'###.#..... ....#   ##', \
+       r'#\\.#..... ....#\   #', \
+       r'########.. ..###*####', \
+       r'#......... .........#', \
+       r'#......... ....***..#', \
+       r'#..\\\\\ # ####.....#', \
+       r'#........*R..\\\   .#', \
+       r'##########L##########'])   
+    return map
+  def map9(self):
+    map = Map()
+    map.load(
+      [r'        #L#######         ', \
+       r'        #*** \\ #         ', \
+       r'        #\\\ .. #         ', \
+       r'#########.##    ##########', \
+       r'#.......\ ..........*   .#', \
+       r'#*******\......#....#\\ .#', \
+       r'###\.\\\...**..#....... *#', \
+       r'#*****\\  .\\..##     #\.#', \
+       r'######### ....  ##########', \
+       r'        #       #         ', \
+       r'        ####*####         ', \
+       r'        #.......#         ', \
+       r'#########  \\\\*##########', \
+       r'#*\\  **#     *..*\ \\\\\#', \
+       r'#.\**\*** .....**.# \\##\#', \
+       r'#\R......     .\\.. \\\\\#', \
+       r'##########################'])
+    return map
+
 class MoveCodes:
   LEFT_MOVE_CODE = 'L'
   RIGHT_MOVE_CODE = 'R'
@@ -245,11 +398,7 @@ class Map:
       targetY = MoveCodes.targety(self.roboY, moveCode)
       if moveCode == MoveCodes.ABORT_MOVE_CODE:
         resultDiff.updateMapState(MapState.ABORT)
-    
-      if (self.getmapitem(targetX, targetY) == LAMBDA_CODE) |  \
-         (self.getmapitem(targetX, targetY) == GRASS_CODE) |   \
-         (self.getmapitem(targetX, targetY) == EMPTY_CODE) |   \
-         (self.getmapitem(targetX, targetY) == OPEN_LIFT_CODE):
+      if (self.isallowedmove(targetX, targetY)):
         resultDiff.moveRobo(self.roboX, self.roboY, targetX, targetY)
       if (self.getmapitem(targetX, targetY) == LAMBDA_CODE):
         resultDiff.collectLambda()
@@ -258,12 +407,10 @@ class Map:
       if (moveCode == MoveCodes.LEFT_MOVE_CODE) & \
          (self.getmapitem(targetX, targetY) == ROCK_CODE) & \
          (self.getmapitem(targetX - 1, targetY) == EMPTY_CODE):
-        resultDiff.moveRobo(self.roboX, self.roboY, targetX, targetY)
         resultDiff.moveRock(targetX, targetY, targetX - 1, targetY)
       if (moveCode == MoveCodes.RIGHT_MOVE_CODE) & \
          (self.getmapitem(targetX, targetY) == ROCK_CODE) & \
          (self.getmapitem(targetX + 1, targetY) == EMPTY_CODE):
-        resultDiff.moveRobo(self.roboX, self.roboY, targetX, targetY)
         resultDiff.moveRock(targetX, targetY, targetX + 1, targetY)
     return resultDiff  
   def update(self, resultDiff):
@@ -310,159 +457,31 @@ class Map:
     map = map.apply(map.update(Diff()))
     map.updatedistances()
     return map
-
-class MapSamples:
-  def __init__(self):
-    self.maps = []
-    self.maps.append(self.map1())
-    self.maps.append(self.map2())
-    self.maps.append(self.map3())
-    self.maps.append(self.map4())
-    self.maps.append(self.map5())
-    self.maps.append(self.map6())
-    self.maps.append(self.map7())
-    self.maps.append(self.map8())
-    self.maps.append(self.map9())
-  def map(self, index):
-    return self.maps[index]
-  def map1(self):
-    map = Map()
-    map.load(    \
-      [r'######', \
-       r'#. *R#', \
-       r'#  \.#', \
-       r'#\ * #', \
-       r'L  .\#', \
-       r'######'])
-    return map
-  def map2(self):
-    map = Map()
-    map.load(       \
-      [r'#######',  \
-       r'#..***#',  \
-       r'#..\\\#',  \
-       r'#...**#',  \
-       r'#.*.*\#',  \
-       r'LR....#',  \
-       r'#######'])
-    return map
-  def map3(self):
-    map = Map()
-    map.load(      \
-      [r'########', \
-       r'#..R...#', \
-       r'#..*...#', \
-       r'#..#...#', \
-       r'#.\.\..L', \
-       r'####**.#', \
-       r'#\.....#', \
-       r'#\..* .#', \
-       r'########'])
-    return map
-  def map4(self):
-    map = Map()
-    map.load(
-      [r'#########', \
-       r'#.*..#\.#', \
-       r'#.\..#\.L', \
-       r'#.R .##.#', \
-       r'#.\  ...#', \
-       r'#..\  ..#', \
-       r'#...\  ##', \
-       r'#....\ \#', \
-       r'#########'])
-    return map
-  def map5(self):
-    map = Map()
-    map.load(          \
-      [r'############', \
-       r'#..........#', \
-       r'#.....*....#', \
-       r'#..\\\\\\..#', \
-       r'#.     ....#', \
-       r'#..\\\\\\\.#', \
-       r'#..\..    .#', \
-       r'#..\.. ....#', \
-       r'#..... ..* #', \
-       r'#..### ### #', \
-       r'#...R#\#\\.#', \
-       r'######L#####'])
-    return map
-  def map6(self):
-    map = Map()
-    map.load(             \
-      [r'###############', \
-       r'#\\\.......** #', \
-       r'#\\#.#####...##', \
-       r'#\\#.....*##. #', \
-       r'#\#####\...## #', \
-       r'#\......####* #', \
-       r'#\.######* #.\#', \
-       r'#\.#. *...##.##', \
-       r'#\##. ..  *...#', \
-       r'#\...... L#.#.#', \
-       r'###########.#.#', \
-       r'#\..........#.#', \
-       r'##.##########.#', \
-       r'#R.#\.........#', \
-       r'###############'])
-    return map
-  def map7(self):
-    map = Map()
-    map.load(              \
-      [r' #######        ', \
-       r' ##    *#       ', \
-       r'  ##R  *##      ', \
-       r'   ##\\\\##     ', \
-       r'    ##....##    ', \
-       r'   ##..\ . ##   ', \
-       r'  ## . L .  ##  ', \
-       r' ##\\\# #\\\\## ', \
-       r'######   #######'])
-    return map
-  def map8(self):
-    map = Map()
-    map.load(
-      [r'##############',        \
-       r'#\\... ......#',        \
-       r'###.#. ...*..#',        \
-       r'#.#. ... ..#',          \
-       r'### #.   \ ..#',        \
-       r'#. .#..... **#######',  \
-       r'#.#\#..... ..\\\*. #',  \
-       r'#*\\#.###. ####\\\ #',  \
-       r'#\\.#.     ...## \ #',  \
-       r'#\#.#..... ....# \ #',  \
-       r'###.#..... ....#   ##', \
-       r'#\\.#..... ....#\   #', \
-       r'########.. ..###*####', \
-       r'#......... .........#', \
-       r'#......... ....***..#', \
-       r'#..\\\\\ # ####.....#', \
-       r'#........*R..\\\   .#', \
-       r'##########L##########'])   
-    return map
-  def map9(self):
-    map = Map()
-    map.load(
-      [r'        #L#######         ', \
-       r'        #*** \\ #         ', \
-       r'        #\\\ .. #         ', \
-       r'#########.##    ##########', \
-       r'#.......\ ..........*   .#', \
-       r'#*******\......#....#\\ .#', \
-       r'###\.\\\...**..#....... *#', \
-       r'#*****\\  .\\..##     #\.#', \
-       r'######### ....  ##########', \
-       r'        #       #         ', \
-       r'        ####*####         ', \
-       r'        #.......#         ', \
-       r'#########  \\\\*##########', \
-       r'#*\\  **#     *..*\ \\\\\#', \
-       r'#.\**\*** .....**.# \\##\#', \
-       r'#\R......     .\\.. \\\\\#', \
-       r'##########################'])
-    return map
+  def isalive(self):
+    if (self.mapState == MapState.RUNNING):
+      if (self.map[self.roboY - 1][self.roboX] in [WALL_CODE, ROCK_CODE]) & \
+         (self.map[self.roboY + 1][self.roboX] in [WALL_CODE, ROCK_CODE]) & \
+         (self.map[self.roboY][self.roboX + 1] in [WALL_CODE, ROCK_CODE]) & \
+         (self.map[self.roboY][self.roboX - 1] in [WALL_CODE, ROCK_CODE]):
+        return 0
+      else:
+        return 1
+    return 0
+  def isallowedmove(self, targetx, targety):
+    if (self.getmapitem(targetx, targety) == LAMBDA_CODE) |  \
+       (self.getmapitem(targetx, targety) == GRASS_CODE) |   \
+       (self.getmapitem(targetx, targety) == EMPTY_CODE) |   \
+       (self.getmapitem(targetx, targety) == OPEN_LIFT_CODE):
+      return 1
+    if (targetx == self.roboX - 1) & \
+       (self.getmapitem(targetx, targety) == ROCK_CODE) & \
+       (self.getmapitem(targetx - 1, targety) == EMPTY_CODE):
+      return 1
+    if (targetx == self.roboX + 1) & \
+       (self.getmapitem(targetx, targety) == ROCK_CODE) & \
+       (self.getmapitem(targetx + 1, targety) == EMPTY_CODE):
+      return 1
+    return 0
     
 class Emulator:
   def play(self):
@@ -483,10 +502,13 @@ class PathFinder:
     self.volatizing = volatizing
     self.alpha = alpha
     self.beta = beta
+    self.map = map
     self.mapRowCount = map.rowcount()
     self.mapColCount = map.colcount()    
     self.pheromones = [[[1.0 for k in range(MoveCodes.movecodecount())] for i in range(self.mapColCount)] for j in range(self.mapRowCount)]
-    self.ants = [copy.deepcopy(map) for i in range(self.antCount)]          
+    self.ants = [self.createant() for i in range(self.antCount)]    
+  def createant(self):
+    return copy.deepcopy(self.map)  
   def selectmove(self, ant):
     column = ant.roboX
     row = ant.roboY
@@ -496,8 +518,11 @@ class PathFinder:
       move = MoveCodes.indextomovecode(moveindex)
       targetcolumn = MoveCodes.targetx(column, move)
       targetrow = MoveCodes.targety(row, move)
-      probabilities[moveindex] = (self.pheromones[row][column][moveindex] ** self.alpha) * (abs(1.0 - ant.distances[targetrow][targetcolumn]) ** self.beta)
-      probabilitysum = probabilitysum + probabilities[moveindex]
+      if ant.isallowedmove(targetcolumn, targetrow) | (move == MoveCodes.WAIT_MOVE_CODE):
+        probabilities[moveindex] = (self.pheromones[row][column][moveindex] ** self.alpha) * (abs(1.0 - ant.distances[targetrow][targetcolumn]) ** self.beta)
+        probabilitysum = probabilitysum + probabilities[moveindex]
+    if probabilitysum == 0.0:
+      return MoveCodes.WAIT_MOVE_CODE
     for moveindex in range(MoveCodes.movecodecount()):
       probabilities[moveindex] = probabilities[moveindex] / probabilitysum
     r = random.random()
@@ -511,6 +536,8 @@ class PathFinder:
     deltapheromones = [[[0.0 for k in range(MoveCodes.movecodecount())] for i in range(self.mapColCount)] for j in range(self.mapRowCount)] 
     for ant in self.ants:
       delta = (ant.scores + self.routeDepth) / self.targetScores
+      if not ant.isalive():
+        delta = -delta
       for posIndex in range(len(ant.route)):
         xpos = ant.routeXs[posIndex]
         ypos = ant.routeYs[posIndex]
@@ -538,6 +565,9 @@ class PathFinder:
         if ant.scores > maxAntScores:
           maxAntScores = ant.scores
           maxAnt = ant
+      for antIndex in range(len(self.ants)):
+        if (not self.ants[antIndex].isalive()) & (self.ants[antIndex] != maxAnt):
+          self.ants[antIndex] = self.createant()
       self.updatepheromones()
     return maxAnt
   def dofind(self):
@@ -546,4 +576,4 @@ class PathFinder:
     return
         
 map = MapSamples().map(1)
-PathFinder(antCount = 40, routeDepth = 50, map = map, targetScores = 225, volatizing = 0.9, alpha = 1.0, beta = 4.0).dofind()
+PathFinder(antCount = 50, routeDepth = 50, map = map, targetScores = 225, volatizing = 1.0, alpha = 1.0, beta = 2.0).dofind()
